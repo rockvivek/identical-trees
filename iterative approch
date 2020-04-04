@@ -1,0 +1,82 @@
+#include <iostream>
+#include<bits/stdc++.h>
+using namespace std;
+
+// Data structure to store a Binary Tree node
+struct Node
+{
+    int key;
+    Node *left, *right;
+
+    Node(int key)
+    {
+        this->key = key;
+        this->left = this->right = nullptr;
+    }
+};
+
+// Recursive function to check if two given binary trees are identical or not
+int isIdentical(Node* x, Node* y)
+{
+    //iterative solution approch....
+    if(!x && !y)
+    	return 1;
+    if( (!x && y) || (x && !y) ){
+    	return 0;
+    }
+   stack <pair<Node *,Node *>> temp;
+	temp.push({x,y});
+	while(!temp.empty()){
+		Node *t1 = temp.top().first;
+		Node *t2 = temp.top().second;
+		temp.pop();
+		if(t1->key != t2->key){
+			return 0;
+		}
+		if(t1->left && t2->left)
+			temp.push({t1->left , t2->left});
+		else if((!t1->left && t2->left) || (t1->left && !t2->left)){
+			return 0;
+		}
+		if(t1->right && t2->right)
+			temp.push({t1->right , t2->right});
+		else if((!t1->right && t2->right) || (t1->right && !t2->right)){
+			return 0;
+		}
+			
+	}
+	return 1;
+}
+
+// main function
+int main()
+{
+    // construct first tree
+    Node* x = nullptr;
+    
+    x = new Node(15);
+    x->left = new Node(10);
+    x->right = new Node(20);
+    x->left->left = new Node(8);
+    x->left->right = new Node(12);
+    x->right->left = new Node(16);
+    x->right->right = new Node(25);
+
+    // construct second tree
+    Node* y = nullptr;
+    
+    y = new Node(15);
+    y->left = new Node(10);
+    y->right = new Node(20);
+    y->left->left = new Node(89);
+    y->left->right = new Node(12);
+    y->right->left = new Node(16);
+    y->right->right = new Node(25);
+
+    if (isIdentical(x, y))
+        cout << "Given binary Trees are identical";
+    else
+        cout << "Given binary Trees are not identical";
+
+    return 0;
+}
